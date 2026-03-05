@@ -1,66 +1,60 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useFormStepper } from '../lib/hooks/useFormStepper';
+import { useOrders } from '../context/OrdersContext';
+import { ProgressBar } from '../components/ui/ProgressBar';
+import { Step1Sender } from '@components/ui/forms/Step1Sender';
+import { Step2Receiver } from '@components/ui/forms/Step2Receiver';
+import { Step3Confirm } from '@components/ui/forms/Step3Confirm';
+
+import { useRouter } from 'next/navigation';
+
+const STEPS = ['Отправитель', 'Получатель', 'Подтверждение'];
 
 export default function Home() {
+  const router = useRouter();
+  const { currentStep, formData, updateSender, updateReceiver, goToNextStep, goToPrevStep, resetForm } = useFormStepper();
+  const { addOrder } = useOrders();
+
+  const handleSubmit = () => {
+    addOrder(formData);
+    resetForm();
+    router.push('/orders');
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <main className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-2xl mx-auto px-4">
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <ProgressBar currentStep={currentStep} steps={STEPS} />
+          
+          {currentStep === 1 && (
+            <Step1Sender
+              initialData={formData.sender}
+              onUpdate={updateSender}
+              onNext={goToNextStep}
             />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          )}
+          
+          {currentStep === 2 && (
+            <Step2Receiver
+              initialData={formData.receiver}
+              senderCity={formData.sender.city}
+              onUpdate={updateReceiver}
+              onNext={goToNextStep}
+              onPrev={goToPrevStep}
+            />
+          )}
+          
+          {currentStep === 3 && (
+            <Step3Confirm
+              formData={formData}
+              onPrev={goToPrevStep}
+              onSubmit={handleSubmit}
+            />
+          )}
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
