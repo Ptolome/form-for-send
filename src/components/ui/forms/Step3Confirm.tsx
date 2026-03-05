@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import  { FC, FormEvent, useState } from 'react';
-import type { OrderFormData } from '@lib/types';
-import { Button } from '@components/ui/Button';
+import { FC, FormEvent, useState } from "react";
+import type { OrderFormData } from "@lib/types";
+import { Button } from "@components/ui/Button";
 
 interface Step3ConfirmProps {
   formData: OrderFormData;
@@ -11,12 +11,12 @@ interface Step3ConfirmProps {
 }
 
 const cargoTypeLabels: Record<string, string> = {
-  documents: 'Документы',
-  fragile: 'Хрупкое',
-  regular: 'Обычное',
+  documents: "Документы",
+  fragile: "Хрупкое",
+  regular: "Обычное",
 };
 
-export  const Step3Confirm: FC<Step3ConfirmProps> = ({
+export const Step3Confirm: FC<Step3ConfirmProps> = ({
   formData,
   onPrev,
   onSubmit,
@@ -26,17 +26,16 @@ export  const Step3Confirm: FC<Step3ConfirmProps> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    
+
     if (!isAgreed) {
-      alert('Пожалуйста, подтвердите согласие с условиями');
+      alert("Пожалуйста, подтвердите согласие с условиями");
       return;
     }
 
     setIsSubmitting(true);
-    
 
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     onSubmit();
     setIsSubmitting(false);
   };
@@ -44,7 +43,7 @@ export  const Step3Confirm: FC<Step3ConfirmProps> = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <h2 className="text-xl font-semibold mb-6">Подтверждение заявки</h2>
-      
+
       <div className="bg-gray-50 rounded-lg p-4 space-y-4">
         <div>
           <h3 className="font-medium text-gray-700 mb-2">Отправитель</h3>
@@ -57,9 +56,11 @@ export  const Step3Confirm: FC<Step3ConfirmProps> = ({
             <span>{formData.sender.city}</span>
           </div>
         </div>
-        
+
         <div className="border-t border-gray-200 pt-4">
-          <h3 className="font-medium text-gray-700 mb-2">Получатель и посылка</h3>
+          <h3 className="font-medium text-gray-700 mb-2">
+            Получатель и посылка
+          </h3>
           <div className="grid grid-cols-2 gap-2 text-sm">
             <span className="text-gray-500">Имя:</span>
             <span>{formData.receiver.name}</span>
@@ -72,7 +73,7 @@ export  const Step3Confirm: FC<Step3ConfirmProps> = ({
           </div>
         </div>
       </div>
-      
+
       <div className="flex items-center space-x-2">
         <input
           type="checkbox"
@@ -85,17 +86,17 @@ export  const Step3Confirm: FC<Step3ConfirmProps> = ({
           Я согласен с условиями обработки заявки
         </label>
       </div>
-      
+
       <div className="flex justify-between pt-4">
         <Button type="button" variant="secondary" onClick={onPrev}>
           Назад
         </Button>
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           disabled={!isAgreed || isSubmitting}
           isLoading={isSubmitting}
         >
-          {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+          {isSubmitting ? "Отправка..." : "Отправить заявку"}
         </Button>
       </div>
     </form>

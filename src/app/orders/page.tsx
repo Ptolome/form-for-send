@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useOrders } from '@/context/OrdersContext';
-import { OrderCard } from '@components/orders/OrderCard';
-import { OrderFilters } from '@components/orders/OrderFilters';
-import { Button } from '@components/ui/Button';
-import type { CargoType } from '@lib/types';
+import { useState } from "react";
+import Link from "next/link";
+import { useOrders } from "@/context/OrdersContext";
+import { OrderCard } from "@components/orders/OrderCard";
+import { OrderFilters } from "@components/orders/OrderFilters";
+import { Button } from "@components/ui/Button";
+import type { CargoType } from "@lib/types";
 
 export default function OrdersPage() {
-  const { orders, searchOrders, filterByCargoType } = useOrders();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedType, setSelectedType] = useState<CargoType | 'all'>('all');
+  const { searchOrders, filterByCargoType } = useOrders();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedType, setSelectedType] = useState<CargoType | "all">("all");
 
   const filteredOrders = filterByCargoType(selectedType);
   const searchedOrders = searchOrders(searchQuery);
@@ -36,9 +36,7 @@ export default function OrdersPage() {
 
         <div className="space-y-4">
           {displayedOrders.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">
-              Заявки не найдены
-            </p>
+            <p className="text-center text-gray-500 py-8">Заявки не найдены</p>
           ) : (
             displayedOrders.map((order) => (
               <OrderCard key={order.id} order={order} />

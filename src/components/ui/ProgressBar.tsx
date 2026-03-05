@@ -1,5 +1,5 @@
-import type { Step } from '@lib/types';
-import { FC } from 'react';
+import type { Step } from "@lib/types";
+import { FC } from "react";
 
 interface ProgressBarProps {
   currentStep: Step;
@@ -14,36 +14,36 @@ export const ProgressBar: FC<ProgressBarProps> = ({ currentStep, steps }) => {
           const stepNumber = index + 1;
           const isActive = stepNumber === currentStep;
           const isCompleted = stepNumber < currentStep;
-          
+
           return (
             <div key={step} className="flex items-center flex-1 last:flex-none">
               <div className="flex flex-col items-center">
                 <div
                   className={`
                     w-10 h-10 rounded-full flex items-center justify-center font-medium
-                    ${isCompleted ? 'bg-blue-600 text-white' : ''}
-                    ${isActive ? 'bg-blue-600 text-white ring-4 ring-blue-100' : ''}
-                    ${!isActive && !isCompleted ? 'bg-gray-200 text-gray-600' : ''}
+                    ${isCompleted ? "bg-blue-600 text-white" : ""}
+                    ${isActive ? "bg-blue-600 text-white ring-4 ring-blue-100" : ""}
+                    ${!isActive && !isCompleted ? "bg-gray-200 text-gray-600" : ""}
                   `}
                 >
-                  {isCompleted ? '✓' : stepNumber}
+                  {isCompleted ? "✓" : stepNumber}
                 </div>
-                <span 
+                <span
                   className={`
                     mt-2 text-sm whitespace-nowrap
-                    ${isActive ? 'text-blue-600 font-medium' : 'text-gray-500'}
+                    ${isActive ? "text-blue-600 font-medium" : "text-gray-500"}
                   `}
                 >
                   {step}
                 </span>
               </div>
-              
+
               {index < steps.length - 1 && (
-                <div 
+                <div
                   className={`
                     h-1 flex-1 mx-4
-                    ${stepNumber < currentStep ? 'bg-blue-600' : 'bg-gray-200'}
-                  `} 
+                    ${stepNumber < currentStep ? "bg-blue-600" : "bg-gray-200"}
+                  `}
                 />
               )}
             </div>
@@ -66,7 +66,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({ currentStep, steps }) => {
               key={index}
               className={`
                 flex-1 h-2 rounded-full transition-all duration-300
-                ${index + 1 <= currentStep ? 'bg-blue-600' : 'bg-gray-200'}
+                ${index + 1 <= currentStep ? "bg-blue-600" : "bg-gray-200"}
               `}
             />
           ))}

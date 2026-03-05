@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import  { FC, FormEvent, useState } from 'react';
-import { z } from 'zod';
-import { receiverSchema } from '@lib/schemas/validation';
-import type { ReceiverInfo } from '@lib/types';
-import { Button } from '@components/ui/Button';
-import { Input } from '@components/ui/Input';
+import { FC, FormEvent, useState } from "react";
+import { z } from "zod";
+import { receiverSchema } from "@lib/schemas/validation";
+import type { CargoType, ReceiverInfo } from "@lib/types";
+import { Button } from "@components/ui/Button";
+import { Input } from "@components/ui/Input";
 
 interface Step2ReceiverProps {
   initialData: ReceiverInfo;
@@ -15,12 +15,18 @@ interface Step2ReceiverProps {
   onPrev: () => void;
 }
 
-const CITIES = ['Москва', 'Санкт-Петербург', 'Казань', 'Новосибирск', 'Екатеринбург'];
+const CITIES = [
+  "Москва",
+  "Санкт-Петербург",
+  "Казань",
+  "Новосибирск",
+  "Екатеринбург",
+];
 
 const cargoTypeOptions = [
-  { value: 'documents', label: 'Документы' },
-  { value: 'fragile', label: 'Хрупкое' },
-  { value: 'regular', label: 'Обычное' },
+  { value: "documents", label: "Документы" },
+  { value: "fragile", label: "Хрупкое" },
+  { value: "regular", label: "Обычное" },
 ];
 
 export const Step2Receiver: FC<Step2ReceiverProps> = ({
@@ -34,39 +40,55 @@ export const Step2Receiver: FC<Step2ReceiverProps> = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
-    try {
-      const dataWithValidation = {
-        ...initialData,
-        _senderCity: senderCity,
-      };
-      
-      receiverSchema.parse(initialData);
 
-      if (initialData.city === senderCity) {
-        setErrors({ city: 'Город назначения не может совпадать с городом отправления' });
-        return;
-      }
-      
+    if (initialData.city === senderCity) {
+      setErrors({
+        city: "Город назначения не может совпадать с городом отправления",
+      });
+      return;
+    }
+
+    const result = receiverSchema.safeParse(initialData);
+
+    if (result.success) {
       setErrors({});
       onNext();
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        error.errors.forEach((err) => {
-          if (err.path[0]) {
-            newErrors[err.path[0] as string] = err.message;
-          }
-        });
-        setErrors(newErrors);
-      }
+    } else {
+      const newErrors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        if (issue.path[0]) {
+          newErrors[issue.path[0] as string] = issue.message;
+        }
+      });
+      setErrors(newErrors);
     }
+  };
+  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onUpdate({ city: e.target.value });
+    if (errors.city) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.city;
+        return newErrors;
+      });
+    }
+  };
+
+  const handleCargoTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onUpdate({ cargoType: e.target.value as CargoType });
+  };
+
+  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    onUpdate({ weight: isNaN(value) ? 0.1 : Math.max(0.1, Math.min(30, value)) });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold mb-6">Информация о получателе и посылке</h2>
-      
+      <h2 className="text-xl font-semibold mb-6">
+        Информация о получателе и посылке
+      </h2>
+
       <Input
         label="Имя получателя"
         value={initialData.name}
@@ -74,19 +96,19 @@ export const Step2Receiver: FC<Step2ReceiverProps> = ({
         error={errors.name}
         required
       />
-      
+
       <div className="space-y-1">
         <label className="block text-sm font-medium text-gray-700">
           Город назначения
         </label>
         <select
           value={initialData.city}
-          onChange={(e) => onUpdate({ city: e.target.value })}
+          onChange={handleCityChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         >
           <option value="">Выберите город</option>
-          {CITIES.filter(city => city !== senderCity).map((city) => (
+          {CITIES.filter((city) => city !== senderCity).map((city) => (
             <option key={city} value={city}>
               {city}
             </option>
@@ -101,7 +123,7 @@ export const Step2Receiver: FC<Step2ReceiverProps> = ({
         </label>
         <select
           value={initialData.cargoType}
-          onChange={(e) => onUpdate({ cargoType: e.target.value as any })}
+          onChange={handleCargoTypeChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {cargoTypeOptions.map((option) => (
@@ -119,11 +141,11 @@ export const Step2Receiver: FC<Step2ReceiverProps> = ({
         min="0.1"
         max="30"
         value={initialData.weight}
-        onChange={(e) => onUpdate({ weight: parseFloat(e.target.value) || 0.1 })}
+        onChange={handleWeightChange}
         error={errors.weight}
         required
       />
-      
+
       <div className="flex justify-between pt-4">
         <Button type="button" variant="secondary" onClick={onPrev}>
           Назад

@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { FC, FormEvent, useState } from 'react';
-import { senderSchema } from '@lib/schemas/validation';
-import type { SenderInfo } from '@lib/types';
-import { Button } from '@components/ui/Button';
-import { Input } from '@components/ui/Input';
-import { z } from 'zod';
+import { FC, FormEvent, useState } from "react";
+import { senderSchema } from "@lib/schemas/validation";
+import type { SenderInfo } from "@lib/types";
+import { Button } from "@components/ui/Button";
+import { Input } from "@components/ui/Input";
+import { z } from "zod";
+import { getZodErrors } from "@/lib/utils/zodErrors";
 
 interface Step1SenderProps {
   initialData: SenderInfo;
@@ -13,7 +14,13 @@ interface Step1SenderProps {
   onNext: () => void;
 }
 
-const CITIES = ['Москва', 'Санкт-Петербург', 'Казань', 'Новосибирск', 'Екатеринбург'];
+const CITIES = [
+  "Москва",
+  "Санкт-Петербург",
+  "Казань",
+  "Новосибирск",
+  "Екатеринбург",
+];
 
 export const Step1Sender: FC<Step1SenderProps> = ({
   initialData,
@@ -24,28 +31,21 @@ export const Step1Sender: FC<Step1SenderProps> = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
-    try {
-      senderSchema.parse(initialData);
+
+    const result = senderSchema.safeParse(initialData);
+
+    if (result.success) {
       setErrors({});
       onNext();
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        error.errors.forEach((err) => {
-          if (err.path[0]) {
-            newErrors[err.path[0] as string] = err.message;
-          }
-        });
-        setErrors(newErrors);
-      }
+    } else {
+      setErrors(getZodErrors(result.error));
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="text-xl font-semibold mb-6">Информация об отправителе</h2>
-      
+
       <Input
         label="Имя"
         value={initialData.name}
@@ -53,7 +53,7 @@ export const Step1Sender: FC<Step1SenderProps> = ({
         error={errors.name}
         required
       />
-      
+
       <Input
         label="Телефон"
         value={initialData.phone}
@@ -62,7 +62,7 @@ export const Step1Sender: FC<Step1SenderProps> = ({
         error={errors.phone}
         required
       />
-      
+
       <div className="space-y-1">
         <label className="block text-sm font-medium text-gray-700">
           Город отправления
@@ -82,7 +82,7 @@ export const Step1Sender: FC<Step1SenderProps> = ({
         </select>
         {errors.city && <p className="text-sm text-red-600">{errors.city}</p>}
       </div>
-      
+
       <div className="flex justify-end pt-4">
         <Button type="submit">Далее</Button>
       </div>

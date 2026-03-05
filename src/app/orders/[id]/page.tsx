@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useParams, useRouter } from 'next/navigation';
-import { useOrders } from '@/context/OrdersContext';
-import { OrderDetails } from '@components/orders/OrderDetails';
-import { Button } from '@components/ui/Button';
-import Link from 'next/link';
+import { useParams, useRouter } from "next/navigation";
+import { useOrders } from "@/context/OrdersContext";
+import { OrderDetails } from "@components/orders/OrderDetails";
+import { Button } from "@components/ui/Button";
+import Link from "next/link";
 
 export default function OrderDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { getOrder } = useOrders();
-  
+
   const order = getOrder(params.id as string);
 
   if (!order) {

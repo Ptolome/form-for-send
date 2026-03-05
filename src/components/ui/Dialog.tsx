@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import  {FC, useEffect } from 'react';
-import { Button } from '@components/ui/Button';
+import { FC, useEffect } from "react";
+import { Button } from "@components/ui/Button";
 
 interface DialogProps {
   isOpen: boolean;
@@ -19,22 +19,22 @@ export const Dialog: FC<DialogProps> = ({
   onConfirm,
   title,
   message,
-  confirmText = 'Подтвердить',
-  cancelText = 'Отмена',
+  confirmText = "Подтвердить",
+  cancelText = "Отмена",
 }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
     };
   }, [isOpen, onClose]);
 

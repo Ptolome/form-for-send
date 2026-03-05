@@ -1,0 +1,23 @@
+# Зависимости
+node_modules
+.next
+dist
+build
+coverage
+
+# Конфигурационные файлы
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Сборка
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Другое
+.DS_Store
+*.pem

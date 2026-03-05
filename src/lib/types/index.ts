@@ -1,6 +1,6 @@
-export type CargoType = 'documents' | 'fragile' | 'regular';
+export type CargoType = "documents" | "fragile" | "regular";
 
-export type OrderStatus = 'new' | 'processing' | 'delivered';
+export type OrderStatus = "new" | "processing" | "delivered";
 
 export interface SenderInfo {
   name: string;

@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useOrders } from '../../context/OrdersContext';
-import { Dialog } from '../ui/Dialog';
-import { Button } from '../ui/Button';
-import type { Order } from '../../lib/types';
+import React, { useState } from "react";
+import Link from "next/link";
+import { useOrders } from "../../context/OrdersContext";
+import { Dialog } from "../ui/Dialog";
+import { Button } from "../ui/Button";
+import type { Order } from "../../lib/types";
 
 interface OrderCardProps {
   order: Order;
 }
 
 const statusLabels: Record<string, string> = {
-  new: 'Новая',
-  processing: 'В обработке',
-  delivered: 'Доставлено',
+  new: "Новая",
+  processing: "В обработке",
+  delivered: "Доставлено",
 };
 
 const statusColors: Record<string, string> = {
-  new: 'bg-blue-100 text-blue-800',
-  processing: 'bg-yellow-100 text-yellow-800',
-  delivered: 'bg-green-100 text-green-800',
+  new: "bg-blue-100 text-blue-800",
+  processing: "bg-yellow-100 text-yellow-800",
+  delivered: "bg-green-100 text-green-800",
 };
 
 const cargoTypeLabels: Record<string, string> = {
-  documents: 'Документы',
-  fragile: 'Хрупкое',
-  regular: 'Обычное',
+  documents: "Документы",
+  fragile: "Хрупкое",
+  regular: "Обычное",
 };
 
 export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
@@ -39,12 +39,12 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return new Date(dateString).toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -61,30 +61,32 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
                 <span className="font-medium">Куда:</span>
                 <span>{order.receiver.city}</span>
               </div>
-              
+
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                 <span>Отправитель: {order.sender.name}</span>
                 <span>Получатель: {order.receiver.name}</span>
                 <span>Тип: {cargoTypeLabels[order.receiver.cargoType]}</span>
                 <span>Вес: {order.receiver.weight} кг</span>
               </div>
-              
+
               <div className="mt-2 text-xs text-gray-400">
                 {formatDate(order.createdAt)}
               </div>
             </div>
-            
+
             <div className="flex items-center gap-3">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[order.status]}`}
+              >
                 {statusLabels[order.status]}
               </span>
-              
+
               <Button
                 variant="danger"
                 onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setIsDeleteDialogOpen(true);
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsDeleteDialogOpen(true);
                 }}
               >
                 Удалить

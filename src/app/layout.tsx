@@ -1,13 +1,13 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import { OrdersProvider } from '../context/OrdersContext';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { OrdersProvider } from "../context/OrdersContext";
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] });
+const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
-  title: 'Доставка - Оформление заявок',
-  description: 'Сервис для оформления заявок на доставку',
+  title: "Доставка - Оформление заявок",
+  description: "Сервис для оформления заявок на доставку",
 };
 
 export default function RootLayout({
@@ -18,9 +18,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={inter.className}>
-        <OrdersProvider>
-          {children}
-        </OrdersProvider>
+        <OrdersProvider>{children}</OrdersProvider>
       </body>
     </html>
   );
