@@ -24,7 +24,9 @@ export const Dialog: FC<DialogProps> = ({
 }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose()
+      };
     };
 
     if (isOpen) {
@@ -43,7 +45,7 @@ export const Dialog: FC<DialogProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="absolute inset-0 backdrop-blur-sm bg-white/30"
         onClick={onClose}
       />
       <div className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4">
