@@ -1,26 +1,18 @@
 "use client";
 
 import { FC, FormEvent, useState } from "react";
-import { senderSchema } from "@lib/schemas/validation";
-import type { SenderInfo } from "@lib/types";
+import { senderSchema } from "./schemas/validation";
+import type { SenderInfo } from "@/types";
 import { Button } from "@components/ui/Button";
 import { Input } from "@components/ui/Input";
-import { z } from "zod";
 import { getZodErrors } from "@/lib/utils/zodErrors";
+import { CITIES } from "./const/data";
 
 interface Step1SenderProps {
   initialData: SenderInfo;
   onUpdate: (data: Partial<SenderInfo>) => void;
   onNext: () => void;
 }
-
-const CITIES = [
-  "Москва",
-  "Санкт-Петербург",
-  "Казань",
-  "Новосибирск",
-  "Екатеринбург",
-];
 
 export const Step1Sender: FC<Step1SenderProps> = ({
   initialData,

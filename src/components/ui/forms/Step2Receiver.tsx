@@ -1,11 +1,11 @@
 "use client";
 
 import { FC, FormEvent, useState } from "react";
-import { z } from "zod";
-import { receiverSchema } from "@lib/schemas/validation";
-import type { CargoType, ReceiverInfo } from "@lib/types";
+import { receiverSchema } from "./schemas/validation";
+import type { CargoType, ReceiverInfo } from "@/types";
 import { Button } from "@components/ui/Button";
 import { Input } from "@components/ui/Input";
+import { cargoTypeOptions, CITIES } from "./const/data";
 
 interface Step2ReceiverProps {
   initialData: ReceiverInfo;
@@ -14,20 +14,6 @@ interface Step2ReceiverProps {
   onNext: () => void;
   onPrev: () => void;
 }
-
-const CITIES = [
-  "Москва",
-  "Санкт-Петербург",
-  "Казань",
-  "Новосибирск",
-  "Екатеринбург",
-];
-
-const cargoTypeOptions = [
-  { value: "documents", label: "Документы" },
-  { value: "fragile", label: "Хрупкое" },
-  { value: "regular", label: "Обычное" },
-];
 
 export const Step2Receiver: FC<Step2ReceiverProps> = ({
   initialData,

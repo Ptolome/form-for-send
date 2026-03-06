@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, FC } from "react";
 import { Input } from "@components/ui/Input";
-import type { CargoType } from "@lib/types";
+import type { CargoType } from "@/types";
+import { cargoTypeOptions } from "./const/data";
+import useDebounce from "@/lib/hooks/useDebounce";
 
 interface OrderFiltersProps {
   onSearch: (query: string) => void;
@@ -10,27 +12,17 @@ interface OrderFiltersProps {
   selectedType: CargoType | "all";
 }
 
-const cargoTypeOptions = [
-  { value: "all", label: "Все типы" },
-  { value: "documents", label: "Документы" },
-  { value: "fragile", label: "Хрупкое" },
-  { value: "regular", label: "Обычное" },
-];
-
 export const OrderFilters: FC<OrderFiltersProps> = ({
   onSearch,
   onFilterType,
   selectedType,
 }) => {
   const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDebounce(searchInput, 500);
 
   useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      onSearch(searchInput);
-    }, 300);
-
-    return () => clearTimeout(debounceTimer);
-  }, [searchInput, onSearch]);
+    onSearch(debouncedSearch);
+  }, [debouncedSearch, onSearch]);
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 mb-6">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Step, OrderFormData } from "../types";
+import type { Step, OrderFormData } from "../../types";
 
 const initialFormData: OrderFormData = {
   sender: {

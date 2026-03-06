@@ -1,20 +1,15 @@
 "use client";
 
 import { FC, FormEvent, useState } from "react";
-import type { OrderFormData } from "@lib/types";
+import type { OrderFormData } from "@/types";
 import { Button } from "@components/ui/Button";
+import { cargoTypeLabels } from "./const/data";
 
 interface Step3ConfirmProps {
   formData: OrderFormData;
   onPrev: () => void;
   onSubmit: () => void;
 }
-
-const cargoTypeLabels: Record<string, string> = {
-  documents: "Документы",
-  fragile: "Хрупкое",
-  regular: "Обычное",
-};
 
 export const Step3Confirm: FC<Step3ConfirmProps> = ({
   formData,

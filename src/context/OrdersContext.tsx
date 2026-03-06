@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useCallback } from "react";
 import { useLocalStorage } from "@lib/hooks/useLocalStorage";
-import type { Order, OrderFormData, CargoType } from "@lib/types";
+import type { Order, OrderFormData, CargoType } from "@/types";
 
 interface OrdersContextType {
   orders: Order[];

@@ -1,4 +1,4 @@
-import type { Step } from "@lib/types";
+import type { Step } from "@/types";
 import { FC } from "react";
 
 interface ProgressBarProps {

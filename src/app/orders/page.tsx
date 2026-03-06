@@ -6,7 +6,7 @@ import { useOrders } from "@/context/OrdersContext";
 import { OrderCard } from "@components/orders/OrderCard";
 import { OrderFilters } from "@components/orders/OrderFilters";
 import { Button } from "@components/ui/Button";
-import type { CargoType } from "@lib/types";
+import type { CargoType } from "@/types";
 
 export default function OrdersPage() {
   const { searchOrders, filterByCargoType } = useOrders();
